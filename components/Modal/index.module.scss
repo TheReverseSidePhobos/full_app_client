@@ -1,0 +1,31 @@
+.modal {
+  position: absolute;
+  background-color: #a7a7a7;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 35%;
+  height: 40%;
+  z-index: 100;
+  border: 10px solid rgb(175, 218, 235);
+  color: #fff;
+  text-align: center;
+  font-size: 24px;
+  border-radius: 10px;
+}
+.closeModal {
+  position: absolute;
+  right: 10px;
+  top: 2px;
+  cursor: pointer;
+  &:hover {
+    color: rgb(219, 219, 219);
+  }
+}
+.forma {
+  display: flex;
+  flex-direction: column;
+  .forma > div {
+    max-width: 80%;
+  }
+}
