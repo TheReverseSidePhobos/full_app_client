@@ -5,13 +5,17 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: 35%;
-  height: 40%;
+  height: 50%;
   z-index: 100;
   border: 10px solid rgb(175, 218, 235);
-  color: #fff;
+  color: #000;
   text-align: center;
   font-size: 24px;
   border-radius: 10px;
+  h1 {
+    font-size: 38px;
+  }
+  padding: 20px;
 }
 .closeModal {
   position: absolute;
@@ -22,10 +26,42 @@
     color: rgb(219, 219, 219);
   }
 }
-.forma {
-  display: flex;
-  flex-direction: column;
-  .forma > div {
-    max-width: 80%;
+.select__item {
+  min-height: 2.5em;
+  max-width: 80%;
+  padding: 10px;
+  width: 215px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  &:focus {
+    outline: none;
+  }
+}
+.field__item {
+  min-height: 2.5em;
+  max-width: 80%;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  &:focus {
+    outline: none;
+  }
+  resize: none;
+}
+.field__itemBtn {
+  min-height: 2.5em;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(175, 218, 235);
   }
 }

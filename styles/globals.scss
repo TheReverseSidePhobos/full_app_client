@@ -107,3 +107,82 @@ a.selected {
   padding: 6px 0;
 }
 //footer
+.title {
+  // color: #a7a7a7;
+  color: #000;
+  margin-bottom: 50px;
+  text-align: center;
+  padding: 5px 0;
+}
+.new_request,
+.in_progress,
+.done {
+  min-width: 30%;
+  padding: 0 10px 10px 10px;
+  min-height: 100vh;
+}
+.in_progress {
+}
+.done {
+}
+.card {
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  // border: 3px solid rgb(47, 65, 47);
+  margin: 10px 0;
+  padding: 10px;
+}
+.buttons {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+.card__btn {
+  border: none;
+  background-color: rgb(175, 218, 235);
+  padding: 8px 18px;
+  border-radius: 5px;
+  font-size: 20px;
+  &:hover {
+    background-color: #000;
+    color: rgb(175, 218, 235);
+    cursor: pointer;
+  }
+}
+.new_request_title {
+  background-color: #ebafda;
+}
+.in_progress_title {
+  background-color: #afdaeb;
+}
+.done_title {
+  background-color: #daebaf;
+}
+.card {
+  .close {
+    float: right;
+    cursor: pointer;
+    transition: all 0.2s linear;
+    &:hover {
+      color: rgb(175, 8, 8);
+      transform: rotate(90deg);
+    }
+  }
+}
+.item_title {
+  text-transform: capitalize;
+}
+.priority {
+  text-align: left;
+}
+.green {
+  color: green;
+}
+.blue {
+  color: blue;
+}
+.red {
+  color: red;
+}
+.date {
+  text-align: center;
+}

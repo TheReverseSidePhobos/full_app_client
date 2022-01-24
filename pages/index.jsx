@@ -8,7 +8,11 @@ import Layout from '../components/Layout';
 import DatePicker from 'react-datepicker';
 import Modal from '../components/Modal';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleModalAC } from '../redux/actions/task_actions';
+import {
+  toggleModalAC,
+  changeStatus,
+  delete_item
+} from '../redux/actions/task_actions';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -18,19 +22,19 @@ export default function Home() {
   const [tomorrow, setTomorrow] = useState(false);
   const dispatch = useDispatch();
   const { modal_show } = useSelector((state) => state.task);
-  //low_opacity
-  console.log('modal_show: ', modal_show);
+  const { taskName, textTask, taskStatus } = useSelector((state) => state.task);
+  const { task__arr } = useSelector((state) => state.task);
+
+  debugger;
+  debugger;
   const handleDayBtn = (e) => {
-    debugger;
     setDay(e.target.outerText);
-    console.log(day);
 
     if (e.target.outerText === 'Tomorrow') {
       debugger;
       let day = startDate.getDate() + 1;
       let month = startDate.getMonth();
       let year = startDate.getFullYear();
-      let str = `${day}, ${month}, ${year}`;
       let newDate = new Date(year, month, day);
       if (!tomorrow) {
         setStartDate(newDate);
@@ -43,8 +47,29 @@ export default function Home() {
     }
   };
   const toggleModal = () => {
-    debugger;
     dispatch(toggleModalAC());
+  };
+
+  const handleNextBtn = (item) => {
+    debugger;
+    if (item.status == 'new') {
+      dispatch(changeStatus(item.id, 'progress', task__arr));
+    } else if (item.status == 'progress') {
+      dispatch(changeStatus(item.id, 'done', task__arr));
+    }
+  };
+  const handlePrevBtn = (item) => {
+    debugger;
+    if (item.status == 'done') {
+      dispatch(changeStatus(item.id, 'progress', task__arr));
+    } else if (item.status == 'progress') {
+      dispatch(changeStatus(item.id, 'new', task__arr));
+    }
+  };
+
+  const handeDeleteBtn = (id, task__arr) => {
+    debugger;
+    dispatch(delete_item(id, task__arr));
   };
   return (
     <div>
@@ -96,9 +121,175 @@ export default function Home() {
                 </a>
               </div>
               <div className="table">
-                <div className="new_request">New Requests</div>
-                <div className="in_progress">In Progress</div>
-                <div className="done">Done</div>
+                <div className="new_request">
+                  <div className="title new_request_title">New Requests</div>
+                  <div className="cards">
+                    {task__arr &&
+                      task__arr.map((item) =>
+                        item && item.status == 'new' ? (
+                          <div className="card" key={item.id}>
+                            <span
+                              onClick={(e) =>
+                                handeDeleteBtn(item.id, task__arr)
+                              }
+                              className="close"
+                            >
+                              X
+                            </span>
+                            <div className="date">{item.date}</div>
+                            <h5
+                              className={
+                                item.taskPriority == 'Lowest'
+                                  ? 'priority green'
+                                  : item.taskPriority == 'Low'
+                                  ? 'priority green'
+                                  : item.taskPriority == 'medium'
+                                  ? 'priority blue'
+                                  : item.taskPriority == 'high'
+                                  ? 'priority red'
+                                  : item.taskPriority == 'highest'
+                                  ? 'priority red'
+                                  : 'priority'
+                              }
+                            >
+                              {item.taskPriority}
+                            </h5>
+
+                            <h3 className="item_title">{item.name}</h3>
+                            <br />
+                            <div className="item_text">{item.text}</div>
+                            <div className="buttons">
+                              <button className="card__btn"> Previous</button>
+                              <button
+                                className="card__btn"
+                                onClick={() => handleNextBtn(item)}
+                              >
+                                Next
+                              </button>
+                            </div>
+                            <div className="date">
+                              <span>{item.dateTime.getDate()}</span> : 
+                              <span> {item.dateTime.getMonth() + 1}</span> : 
+                              <span> {item.dateTime.getFullYear()}</span> 
+                            </div>
+                          </div>
+                        ) : null
+                      )}
+                  </div>
+                </div>
+
+                <div className="in_progress">
+                  <div className="title in_progress_title">In Progress</div>
+                  <div className="cards">
+                    {task__arr &&
+                      task__arr.map((item) =>
+                        item && item.status == 'progress' ? (
+                          <div className="card" key={item.id}>
+                            <span
+                              onClick={(e) =>
+                                handeDeleteBtn(item.id, task__arr)
+                              }
+                              className="close"
+                            >
+                              X
+                            </span>
+                            <h5
+                              className={
+                                item.taskPriority == 'Lowest'
+                                  ? 'priority green'
+                                  : item.taskPriority == 'Low'
+                                  ? 'priority green'
+                                  : item.taskPriority == 'medium'
+                                  ? 'priority blue'
+                                  : item.taskPriority == 'high'
+                                  ? 'priority red'
+                                  : item.taskPriority == 'highest'
+                                  ? 'priority red'
+                                  : 'priority'
+                              }
+                            >
+                              {item.taskPriority}
+                            </h5>
+                            <h3 className="item_title">{item.name}</h3>
+                            <br />
+                            <div className="item_text">{item.text}</div>
+                            <div className="buttons">
+                              <button
+                                className="card__btn"
+                                onClick={() => handlePrevBtn(item)}
+                              >
+                                {' '}
+                                Previous
+                              </button>
+                              <button
+                                className="card__btn"
+                                onClick={() => handleNextBtn(item)}
+                              >
+                                {' '}
+                                Next
+                              </button>
+                            </div>
+                          </div>
+                        ) : null
+                      )}
+                  </div>
+                </div>
+                <div className="done">
+                  <div className="title done_title">Done</div>
+                  <div className="cards">
+                    {task__arr &&
+                      task__arr.map((item) =>
+                        item && item.status == 'done' ? (
+                          <div className="card" key={item.id}>
+                            <span
+                              onClick={(e) =>
+                                handeDeleteBtn(item.id, task__arr)
+                              }
+                              className="close"
+                            >
+                              X
+                            </span>
+                            <h5
+                              className={
+                                item.taskPriority == 'Lowest'
+                                  ? 'priority green'
+                                  : item.taskPriority == 'Low'
+                                  ? 'priority green'
+                                  : item.taskPriority == 'medium'
+                                  ? 'priority blue'
+                                  : item.taskPriority == 'high'
+                                  ? 'priority red'
+                                  : item.taskPriority == 'highest'
+                                  ? 'priority red'
+                                  : 'priority'
+                              }
+                            >
+                              {item.taskPriority}
+                            </h5>
+                            <h3 className="item_title">{item.name}</h3>
+                            <br />
+                            <div className="item_text">{item.text}</div>
+                            <div className="buttons">
+                              <button
+                                className="card__btn"
+                                onClick={() => handlePrevBtn(item)}
+                              >
+                                {' '}
+                                Previous
+                              </button>
+                              <button
+                                className="card__btn"
+                                onClick={() => handleNextBtn(item)}
+                              >
+                                {' '}
+                                Next
+                              </button>
+                            </div>
+                          </div>
+                        ) : null
+                      )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
