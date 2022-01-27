@@ -10,7 +10,7 @@ import {
   addName,
   addText,
   setPriority
-} from './../../redux/actions/task_actions';
+} from '../../redux/actions/task_actions';
 
 const Modal = ({ dateFromDataPicker }) => {
   const { taskName, textTask, taskPriority } = useSelector(

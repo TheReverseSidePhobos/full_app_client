@@ -5,6 +5,11 @@ export const toggleModalAC = () => {
     type: types.TOGGLE_MODAL
   };
 };
+export const infoToggleModalAC = () => {
+  return {
+    type: types.INFO_TOGGLE_MODAL
+  };
+};
 export const save = (obj) => {
   debugger;
   return {
@@ -12,11 +17,27 @@ export const save = (obj) => {
     payload: obj
   };
 };
+export const saveObjForInfo = (obj) => {
+  debugger;
+  return {
+    type: types.SAVE_OBJ_FOR_INFO,
+    payload: obj
+  };
+};
 
-export const saveTask = (name, text, id, taskPriority, date) => {
+export const loadDataForInfo = (id, task__arr) => {
+  debugger;
+  return async (dispatch) => {
+    let selectedObj = task__arr.find(item => item.id == id)
+    debugger
+    dispatch(saveObjForInfo(selectedObj));
+  };
+};
+export const saveTask = (name, text, id, taskPriority, date, complitedDate) => {
+  debugger;
   return async (dispatch) => {
     if (!taskPriority) {
-      taskPriority = 'Lowest';
+      taskPriority = 'lowest';
     }
     let taskObj = {
       id,
@@ -24,9 +45,20 @@ export const saveTask = (name, text, id, taskPriority, date) => {
       text,
       status: 'new',
       taskPriority,
-      dateTime: date
+      dateTime: date,
+      compliteDate: complitedDate
     };
     dispatch(save(taskObj));
+  };
+};
+export const changePriority = (priority, item, task__arr) => {
+  return async (dispatch) => {
+    task__arr.map((i) => {
+      if (i.id == item.id) {
+        i.taskPriority = priority;
+      }
+    });
+    dispatch(change(task__arr));
   };
 };
 export const addName = (name) => {

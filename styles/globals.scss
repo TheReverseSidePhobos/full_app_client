@@ -107,8 +107,16 @@ a.selected {
   padding: 6px 0;
 }
 //footer
+
 .title {
   // color: #a7a7a7;
+  // height: 100vh;
+  // margin: 0 1rem;
+  // display: flex;
+  // flex-flow: row wrap;
+  // justify-content: space-between;
+  // align-items: center;
+  // align-content: center;
   color: #000;
   margin-bottom: 50px;
   text-align: center;
@@ -117,7 +125,8 @@ a.selected {
 .new_request,
 .in_progress,
 .done {
-  min-width: 30%;
+  min-width: 33%;
+  max-width: 33%;
   padding: 0 10px 10px 10px;
   min-height: 100vh;
 }
@@ -126,6 +135,7 @@ a.selected {
 .done {
 }
 .card {
+  background-color: rgb(241, 247, 243);
   box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
   // border: 3px solid rgb(47, 65, 47);
   margin: 10px 0;
@@ -173,6 +183,7 @@ a.selected {
 }
 .priority {
   text-align: left;
+  text-transform: uppercase;
 }
 .green {
   color: green;
@@ -185,4 +196,29 @@ a.selected {
 }
 .date {
   text-align: center;
+  font-size: 18px;
+}
+.prioritySelect {
+  select {
+    min-height: 30px;
+    min-width: 30%;
+    border: none;
+    font-size: 16px;
+    margin: 0 10px 10px 0;
+  }
+}
+.warning {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: rgba(255, 0, 0, 0.589);
+}
+.detailed {
+  margin: 10px 0;
+  padding: 10px 0;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  &:hover {
+    background-color: rgb(175, 218, 235);
+  }
 }

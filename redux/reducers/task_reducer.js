@@ -1,11 +1,13 @@
 import * as types from '../actions/types';
 
-const initialState = {
+export const initialState = {
   modal_show: false,
+  info_modal_show: false,
   task__arr: [],
   taskName: '',
   textTask: '',
-  taskPriority: ''
+  taskPriority: '',
+  selectedForInfo: null
 };
 
 const taskReducer = (state = initialState, action) => {
@@ -14,6 +16,12 @@ const taskReducer = (state = initialState, action) => {
       return {
         ...state,
         modal_show: !state.modal_show
+      };
+    case types.INFO_TOGGLE_MODAL:
+      debugger;
+      return {
+        ...state,
+        info_modal_show: !state.info_modal_show
       };
     case types.SET_PRIORITY:
       return {
@@ -34,6 +42,12 @@ const taskReducer = (state = initialState, action) => {
         taskName: '',
         textTask: '',
         taskPriority: ''
+      };
+    case types.SAVE_OBJ_FOR_INFO:
+      debugger;
+      return {
+        ...state,
+        selectedForInfo: action.payload
       };
     case types.ADD_NAME:
       return {

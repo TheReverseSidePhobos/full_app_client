@@ -1,37 +1,42 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
+import { BsCheckLg } from 'react-icons/bs';
+import { AiOutlineEdit } from 'react-icons/ai';
 import 'react-calendar/dist/Calendar.css';
 import Layout from '../components/Layout';
 import DatePicker from 'react-datepicker';
 import Modal from '../components/Modal';
+import ModalDetailed from '../components/ModalDetailed';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   toggleModalAC,
+  infoToggleModalAC,
   changeStatus,
-  delete_item
+  delete_item,
+  changePriority,
+  loadDataForInfo
 } from '../redux/actions/task_actions';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default function Home() {
+
+
   const [startDate, setStartDate] = useState(new Date());
   const [day, setDay] = useState('Today');
   const [tomorrow, setTomorrow] = useState(false);
   const dispatch = useDispatch();
-  const { modal_show } = useSelector((state) => state.task);
+  const { modal_show, info_modal_show } = useSelector((state) => state.task);
   const { taskName, textTask, taskStatus } = useSelector((state) => state.task);
-  const { task__arr } = useSelector((state) => state.task);
+  let { task__arr } = useSelector((state) => state.task);
 
-  debugger;
-  debugger;
+
   const handleDayBtn = (e) => {
     setDay(e.target.outerText);
-
     if (e.target.outerText === 'Tomorrow') {
-      debugger;
       let day = startDate.getDate() + 1;
       let month = startDate.getMonth();
       let year = startDate.getFullYear();
@@ -51,7 +56,6 @@ export default function Home() {
   };
 
   const handleNextBtn = (item) => {
-    debugger;
     if (item.status == 'new') {
       dispatch(changeStatus(item.id, 'progress', task__arr));
     } else if (item.status == 'progress') {
@@ -59,7 +63,6 @@ export default function Home() {
     }
   };
   const handlePrevBtn = (item) => {
-    debugger;
     if (item.status == 'done') {
       dispatch(changeStatus(item.id, 'progress', task__arr));
     } else if (item.status == 'progress') {
@@ -68,9 +71,28 @@ export default function Home() {
   };
 
   const handeDeleteBtn = (id, task__arr) => {
-    debugger;
     dispatch(delete_item(id, task__arr));
   };
+
+  const handleEditClick = (id, task__arr) => {
+    setPrioritySelected(!prioritySelected);
+  };
+
+  const handlePriorityOff = (e, item, task__arr) => {
+    dispatch(changePriority(e.target.value, item, task__arr));
+    setPrioritySelected(false);
+  };
+
+  const [prioritySelected, setPrioritySelected] = useState(false);
+
+  const [dataForInfo, setDataForInfo] = useState(null);
+
+  const handleInfoModalShow = (id) => {
+    debugger;
+    dispatch(loadDataForInfo(id, task__arr));
+    dispatch(infoToggleModalAC());
+  };
+
   return (
     <div>
       <Head>
@@ -85,7 +107,8 @@ export default function Home() {
           rel="stylesheet"
         />
       </Head>
-      {modal_show && <Modal />}
+      {modal_show && <Modal dateFromDataPicker={startDate} />}
+      {info_modal_show && <ModalDetailed />}
       <Layout>
         {
           <div
@@ -136,12 +159,13 @@ export default function Home() {
                             >
                               X
                             </span>
+
                             <div className="date">{item.date}</div>
                             <h5
                               className={
-                                item.taskPriority == 'Lowest'
+                                item.taskPriority == 'lowest'
                                   ? 'priority green'
-                                  : item.taskPriority == 'Low'
+                                  : item.taskPriority == 'low'
                                   ? 'priority green'
                                   : item.taskPriority == 'medium'
                                   ? 'priority blue'
@@ -152,12 +176,37 @@ export default function Home() {
                                   : 'priority'
                               }
                             >
-                              {item.taskPriority}
+                              {!prioritySelected ? (
+                                <div>
+                                  {item.taskPriority}
+                                  <AiOutlineEdit onClick={handleEditClick} />
+                                </div>
+                              ) : (
+                                <div className="prioritySelect">
+                                  <select
+                                    onBlur={(e) =>
+                                      handlePriorityOff(e, item, task__arr)
+                                    }
+                                    onChange={(e) =>
+                                      handlePriorityOff(e, item, task__arr)
+                                    }
+                                  >
+                                    <option value="lowest">LOWEST</option>
+                                    <option value="low">LOW</option>
+                                    <option value="medium">MEDIUM</option>
+                                    <option value="high">HIGH</option>
+                                    <option value="highest">HIGHEST</option>
+                                  </select>
+                                </div>
+                              )}
                             </h5>
 
                             <h3 className="item_title">{item.name}</h3>
                             <br />
-                            <div className="item_text">{item.text}</div>
+                            <div className="item_text">
+                              {item.text.length >= 20 &&
+                                item.text.slice(0, 20) + '...'}
+                            </div>
                             <div className="buttons">
                               <button className="card__btn"> Previous</button>
                               <button
@@ -168,9 +217,49 @@ export default function Home() {
                               </button>
                             </div>
                             <div className="date">
-                              <span>{item.dateTime.getDate()}</span> : 
-                              <span> {item.dateTime.getMonth() + 1}</span> : 
-                              <span> {item.dateTime.getFullYear()}</span> 
+                              <span>Creation date: </span>
+                              <span>{item.dateTime.getDate()}</span> :
+                              <span> {item.dateTime.getMonth() + 1}</span> :
+                              <span> {item.dateTime.getFullYear()}</span> <br />
+                              <span>Must be complited: </span>
+                              <span
+                                className={
+                                  item.compliteDate < item.dateTime
+                                    ? 'red'
+                                    : 'green'
+                                }
+                              >
+                                {item.compliteDate.getDate()}
+                              </span>{' '}
+                              :
+                              <span
+                                className={
+                                  item.compliteDate < item.dateTime
+                                    ? 'red'
+                                    : 'green'
+                                }
+                              >
+                                {' '}
+                                {item.compliteDate.getMonth() + 1}
+                              </span>{' '}
+                              :
+                              <span
+                                className={
+                                  item.compliteDate < item.dateTime
+                                    ? 'red'
+                                    : 'green'
+                                }
+                              >
+                                {' '}
+                                {item.compliteDate.getFullYear()}
+                              </span>{' '}
+                              <br />
+                              <div
+                                onClick={() => handleInfoModalShow(item.id)}
+                                className="detailed"
+                              >
+                                show details
+                              </div>
                             </div>
                           </div>
                         ) : null
@@ -195,9 +284,9 @@ export default function Home() {
                             </span>
                             <h5
                               className={
-                                item.taskPriority == 'Lowest'
+                                item.taskPriority == 'lowest'
                                   ? 'priority green'
-                                  : item.taskPriority == 'Low'
+                                  : item.taskPriority == 'low'
                                   ? 'priority green'
                                   : item.taskPriority == 'medium'
                                   ? 'priority blue'
@@ -208,11 +297,36 @@ export default function Home() {
                                   : 'priority'
                               }
                             >
-                              {item.taskPriority}
+                              {!prioritySelected ? (
+                                <div>
+                                  {item.taskPriority}
+                                  <AiOutlineEdit onClick={handleEditClick} />
+                                </div>
+                              ) : (
+                                <div className="prioritySelect">
+                                  <select
+                                    onBlur={(e) =>
+                                      handlePriorityOff(e, item, task__arr)
+                                    }
+                                    onChange={(e) =>
+                                      handlePriorityOff(e, item, task__arr)
+                                    }
+                                  >
+                                    <option value="lowest">LOWEST</option>
+                                    <option value="low">LOW</option>
+                                    <option value="medium">MEDIUM</option>
+                                    <option value="high">HIGH</option>
+                                    <option value="highest">HIGHEST</option>
+                                  </select>
+                                </div>
+                              )}
                             </h5>
                             <h3 className="item_title">{item.name}</h3>
                             <br />
-                            <div className="item_text">{item.text}</div>
+                            <div className="item_text">
+                              {item.text.length >= 30 &&
+                                item.text.slice(0, 30) + '...'}
+                            </div>
                             <div className="buttons">
                               <button
                                 className="card__btn"
@@ -228,6 +342,51 @@ export default function Home() {
                                 {' '}
                                 Next
                               </button>
+                            </div>
+                            <div className="date">
+                              <span>Creation date: </span>
+                              <span>{item.dateTime.getDate()}</span> :
+                              <span> {item.dateTime.getMonth() + 1}</span> :
+                              <span> {item.dateTime.getFullYear()}</span> <br />
+                              <span>Must be complited: </span>
+                              <span
+                                className={
+                                  item.compliteDate < item.dateTime
+                                    ? 'red'
+                                    : 'green'
+                                }
+                              >
+                                {item.compliteDate.getDate()}
+                              </span>{' '}
+                              :
+                              <span
+                                className={
+                                  item.compliteDate < item.dateTime
+                                    ? 'red'
+                                    : 'green'
+                                }
+                              >
+                                {' '}
+                                {item.compliteDate.getMonth() + 1}
+                              </span>{' '}
+                              :
+                              <span
+                                className={
+                                  item.compliteDate < item.dateTime
+                                    ? 'red'
+                                    : 'green'
+                                }
+                              >
+                                {' '}
+                                {item.compliteDate.getFullYear()}
+                              </span>{' '}
+                              <br />
+                              <div
+                                onClick={() => handleInfoModalShow(item.id)}
+                                className="detailed"
+                              >
+                                show details
+                              </div>
                             </div>
                           </div>
                         ) : null
@@ -251,9 +410,9 @@ export default function Home() {
                             </span>
                             <h5
                               className={
-                                item.taskPriority == 'Lowest'
+                                item.taskPriority == 'lowest'
                                   ? 'priority green'
-                                  : item.taskPriority == 'Low'
+                                  : item.taskPriority == 'low'
                                   ? 'priority green'
                                   : item.taskPriority == 'medium'
                                   ? 'priority blue'
@@ -264,11 +423,36 @@ export default function Home() {
                                   : 'priority'
                               }
                             >
-                              {item.taskPriority}
+                              {!prioritySelected ? (
+                                <div>
+                                  {item.taskPriority}
+                                  <AiOutlineEdit onClick={handleEditClick} />
+                                </div>
+                              ) : (
+                                <div className="prioritySelect">
+                                  <select
+                                    onBlur={(e) =>
+                                      handlePriorityOff(e, item, task__arr)
+                                    }
+                                    onChange={(e) =>
+                                      handlePriorityOff(e, item, task__arr)
+                                    }
+                                  >
+                                    <option value="lowest">LOWEST</option>
+                                    <option value="low">LOW</option>
+                                    <option value="medium">MEDIUM</option>
+                                    <option value="high">HIGH</option>
+                                    <option value="highest">HIGHEST</option>
+                                  </select>
+                                </div>
+                              )}
                             </h5>
                             <h3 className="item_title">{item.name}</h3>
                             <br />
-                            <div className="item_text">{item.text}</div>
+                            <div className="item_text">
+                              {item.text.length >= 30 &&
+                                item.text.slice(0, 30) + '...'}
+                            </div>
                             <div className="buttons">
                               <button
                                 className="card__btn"
@@ -284,6 +468,51 @@ export default function Home() {
                                 {' '}
                                 Next
                               </button>
+                            </div>
+                            <div className="date">
+                              <span>Creation date: </span>
+                              <span>{item.dateTime.getDate()}</span> :
+                              <span> {item.dateTime.getMonth() + 1}</span> :
+                              <span> {item.dateTime.getFullYear()}</span> <br />
+                              <span>Must be complited: </span>
+                              <span
+                                className={
+                                  item.compliteDate < item.dateTime
+                                    ? 'red'
+                                    : 'green'
+                                }
+                              >
+                                {item.compliteDate.getDate()}
+                              </span>{' '}
+                              :
+                              <span
+                                className={
+                                  item.compliteDate < item.dateTime
+                                    ? 'red'
+                                    : 'green'
+                                }
+                              >
+                                {' '}
+                                {item.compliteDate.getMonth() + 1}
+                              </span>{' '}
+                              :
+                              <span
+                                className={
+                                  item.compliteDate < item.dateTime
+                                    ? 'red'
+                                    : 'green'
+                                }
+                              >
+                                {' '}
+                                {item.compliteDate.getFullYear()}
+                              </span>{' '}
+                              <br />
+                              <div
+                                onClick={() => handleInfoModalShow(item.id)}
+                                className="detailed"
+                              >
+                                show details
+                              </div>
                             </div>
                           </div>
                         ) : null
