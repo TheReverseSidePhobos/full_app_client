@@ -93,7 +93,7 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
 
   const handleDeleteComment = () => {
     //dispatch()
-  }
+  };
 
   return (
     <div className={style.modal}>
@@ -191,25 +191,36 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
                   </form>
                 ) : (
                   <div>
-                    {comments.map((item) => (
-                      <div className={style.comment_item}>
-                        <div className="pic">
-                          <Image
-                            src={'/user.png'}
-                            alt="user pic"
-                            width={50}
-                            height={50}
-                          />
-                        </div>
-                        <div className={style.titleAndText}>
-                          <div>
-                            <strong className={style.names}>{item.name}</strong>
+                    {comments.length > 0 ? (
+                      comments.map((item) => (
+                        <div className={style.comment_item}>
+                          <div className="pic">
+                            <Image
+                              src={'/user.png'}
+                              alt="user pic"
+                              width={50}
+                              height={50}
+                            />
                           </div>
-                          <div className={style.com}>{item.comment}</div>
+                          <div className={style.titleAndText}>
+                            <div>
+                              <strong className={style.names}>
+                                {item.name}
+                              </strong>
+                            </div>
+                            <div className={style.com}>{item.comment}</div>
+                          </div>
+                          <div
+                            onClick={handleDeleteComment}
+                            className={style.close}
+                          >
+                            X
+                          </div>
                         </div>
-                        <div onClick={handleDeleteComment} className={style.close}>X</div>
-                      </div>
-                    ))}
+                      ))
+                    ) : (
+                      <div>no one comments yet</div>
+                    )}
                   </div>
                 )}
               </div>
