@@ -1,6 +1,7 @@
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 export const INFO_TOGGLE_MODAL = 'INFO_TOGGLE_MODAL';
 export const SAVE_TASK = 'SAVE_TASK';
+export const SAVE_ARR = 'SAVE_ARR';
 export const SAVE_OBJ_FOR_INFO = 'SAVE_OBJ_FOR_INFO';
 export const ADD_NAME = 'ADD_NAME';
 export const ADD_TEXT = 'ADD_TEXT';

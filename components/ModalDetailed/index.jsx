@@ -13,13 +13,17 @@ import {
 } from '../../redux/actions/task_actions';
 
 const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
-  const { taskName, textTask, taskPriority, selectedForInfo } = useSelector(
+  const { taskName, textTask, taskPriority, selectedForInfo, task__arr } = useSelector(
     (state) => state.task
   );
-  const { task__arr } = useSelector((state) => state.task);
+  const [dtemp, setDtemp] = useState(null);
+  useEffect(() => {
+    let dtm = Date.parse(selectedForInfo.dateTime);
+    let dm = new Date(dtm);
+    setDtemp(dm)
+  }, [selectedForInfo]);
 
   const dispatch = useDispatch();
-  // console.log('selectedForInfo: ', selectedForInfo);
   const handleCloseModal = () => {
     dispatch(infoToggleModalAC());
   };
@@ -29,7 +33,6 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
   };
   const handeTextChanged = (e) => {
     dispatch(addText(e.target.value));
-    debugger;
     if (!e.target.value) {
       setTemp(false);
     } else {
@@ -40,12 +43,22 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
   const handePriorityChanged = (e) => {
     dispatch(setPriority(e.target.value));
   };
+  let data;
+  const convertDateFunc = (date) => {
+    let newDate = Date.parse(date);
+    let d = new Date(newDate);
+    let yaer = d.getFullYear();
+    let month = d.getMonth() + 1;
+    let day = d.getDate();
+    let stringCorrectDate = `${day} : ${month} : ${yaer}`;
+    data = d;
+    return stringCorrectDate;
+  };
 
   const [startDate, setStartDate] = useState(new Date());
 
   const [temp, setTemp] = useState(true);
   const handleTouched = (e) => {
-    debugger;
     if (!e.target.value) {
       setTemp(false);
     } else {
@@ -69,7 +82,6 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
           textTask: ''
         }}
         onSubmit={(values) => {
-          debugger;
           handleCloseModal();
         }}
       >
@@ -81,7 +93,7 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
                   name="dp"
                   className={style.dp}
                   inline
-                  selected={selectedForInfo.dateTime}
+                  selected={dtemp}
                   onChange={(date) => setStartDate(date)}
                 />
               </div>
@@ -113,14 +125,10 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
                   />
                 </div>
                 <div style={{ fontSize: '18px' }} className="dateFinish">
-                  <label>Must be complited for</label>{' '}
-                  <br />
-                  <label>{selectedForInfo.compliteDate.getDate()} : </label>
-                  <label>
-                    {selectedForInfo.compliteDate.getMonth() + 1} :{' '}
-                  </label>
-                  <label>{selectedForInfo.compliteDate.getFullYear()}</label>
+                  <label>Must be complited for</label> <br />
+                  {convertDateFunc(selectedForInfo.compliteDate).toString()}
                 </div>
+                <br />
               </div>
             </div>
           </div>

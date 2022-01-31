@@ -76,10 +76,12 @@ const Modal = ({ dateFromDataPicker }) => {
               textTask,
               task__arr.length,
               taskPriority,
-              dateFromDataPicker,
-              startDate
+              new Date(dateFromDataPicker).toString(),
+              new Date(startDate).toString(),
+              task__arr
             )
           );
+          
           handleCloseModal();
         }}
       >

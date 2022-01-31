@@ -18,7 +18,6 @@ const taskReducer = (state = initialState, action) => {
         modal_show: !state.modal_show
       };
     case types.INFO_TOGGLE_MODAL:
-      debugger;
       return {
         ...state,
         info_modal_show: !state.info_modal_show
@@ -29,13 +28,16 @@ const taskReducer = (state = initialState, action) => {
         taskPriority: action.payload
       };
     case types.CHANGE_STATUS:
-      debugger;
       return {
         ...state,
         task__arr: action.task__arr
       };
+    case types.SAVE_ARR:
+      return {
+        ...state,
+        task__arr: action.payload
+      };
     case types.SAVE_TASK:
-      debugger;
       return {
         ...state,
         task__arr: [...state.task__arr, action.payload],
@@ -44,7 +46,6 @@ const taskReducer = (state = initialState, action) => {
         taskPriority: ''
       };
     case types.SAVE_OBJ_FOR_INFO:
-      debugger;
       return {
         ...state,
         selectedForInfo: action.payload
@@ -55,7 +56,6 @@ const taskReducer = (state = initialState, action) => {
         taskName: action.name
       };
     case types.DELETE_ITEM:
-      debugger;
       return {
         ...state,
         task__arr: action.task__arr

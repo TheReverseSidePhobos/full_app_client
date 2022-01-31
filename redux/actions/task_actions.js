@@ -1,3 +1,4 @@
+import Cookie from 'js-cookie';
 import * as types from '../actions/types';
 
 export const toggleModalAC = () => {
@@ -11,14 +12,18 @@ export const infoToggleModalAC = () => {
   };
 };
 export const save = (obj) => {
-  debugger;
   return {
     type: types.SAVE_TASK,
     payload: obj
   };
 };
+export const saveArr = (objArr) => {
+  return {
+    type: types.SAVE_ARR,
+    payload: objArr
+  };
+};
 export const saveObjForInfo = (obj) => {
-  debugger;
   return {
     type: types.SAVE_OBJ_FOR_INFO,
     payload: obj
@@ -26,19 +31,25 @@ export const saveObjForInfo = (obj) => {
 };
 
 export const loadDataForInfo = (id, task__arr) => {
-  debugger;
   return async (dispatch) => {
-    let selectedObj = task__arr.find(item => item.id == id)
-    debugger
+    let selectedObj = task__arr.find((item) => item.id == id);
     dispatch(saveObjForInfo(selectedObj));
   };
 };
-export const saveTask = (name, text, id, taskPriority, date, complitedDate) => {
-  debugger;
+export const saveTask = (
+  name,
+  text,
+  id,
+  taskPriority,
+  date,
+  complitedDate,
+  task__arr
+) => {
   return async (dispatch) => {
     if (!taskPriority) {
       taskPriority = 'lowest';
     }
+    console.log('task__arr from save task: ', task__arr);
     let taskObj = {
       id,
       name,
@@ -48,7 +59,12 @@ export const saveTask = (name, text, id, taskPriority, date, complitedDate) => {
       dateTime: date,
       compliteDate: complitedDate
     };
-    dispatch(save(taskObj));
+
+    let newArr = task__arr;
+    newArr.push(taskObj);
+    const json = JSON.stringify(newArr);
+    Cookie.set('obj', json);
+    dispatch(saveArr(newArr));
   };
 };
 export const changePriority = (priority, item, task__arr) => {
@@ -58,6 +74,8 @@ export const changePriority = (priority, item, task__arr) => {
         i.taskPriority = priority;
       }
     });
+    const json = JSON.stringify(task__arr);
+    Cookie.set('obj', json);
     dispatch(change(task__arr));
   };
 };
@@ -74,7 +92,6 @@ export const addText = (text) => {
   };
 };
 export const change = (task__arr) => {
-  debugger;
   return {
     type: types.CHANGE_STATUS,
     task__arr
@@ -82,14 +99,12 @@ export const change = (task__arr) => {
 };
 
 export const delete_one = (task__arr) => {
-  debugger;
   return {
     type: types.DELETE_ITEM,
     task__arr
   };
 };
 export const setPriority = (priority) => {
-  debugger;
   return {
     type: types.SET_PRIORITY,
     payload: priority
@@ -103,11 +118,12 @@ export const changeStatus = (id, status, task__arr) => {
         item.status = status;
       }
     });
+    const json = JSON.stringify(task__arr);
+    Cookie.set('obj', json);
     dispatch(change(task__arr));
   };
 };
 export const delete_item = (id, task__arr) => {
-  debugger;
   return async (dispatch) => {
     let new_task_arr = [];
     if (task__arr) {

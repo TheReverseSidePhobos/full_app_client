@@ -10,6 +10,7 @@ import Layout from '../components/Layout';
 import DatePicker from 'react-datepicker';
 import Modal from '../components/Modal';
 import ModalDetailed from '../components/ModalDetailed';
+import Cookie from 'js-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   toggleModalAC,
@@ -17,14 +18,13 @@ import {
   changeStatus,
   delete_item,
   changePriority,
-  loadDataForInfo
+  loadDataForInfo,
+  saveArr
 } from '../redux/actions/task_actions';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default function Home() {
-
-
   const [startDate, setStartDate] = useState(new Date());
   const [day, setDay] = useState('Today');
   const [tomorrow, setTomorrow] = useState(false);
@@ -32,7 +32,6 @@ export default function Home() {
   const { modal_show, info_modal_show } = useSelector((state) => state.task);
   const { taskName, textTask, taskStatus } = useSelector((state) => state.task);
   let { task__arr } = useSelector((state) => state.task);
-
 
   const handleDayBtn = (e) => {
     setDay(e.target.outerText);
@@ -71,6 +70,12 @@ export default function Home() {
   };
 
   const handeDeleteBtn = (id, task__arr) => {
+    let taskIndex = task__arr.findIndex((item) => item.id == id);
+    if (taskIndex !== -1) {
+      task__arr.splice(taskIndex, 1);
+    }
+    let newJson = JSON.stringify(task__arr);
+    Cookie.set('obj', newJson);
     dispatch(delete_item(id, task__arr));
   };
 
@@ -83,14 +88,31 @@ export default function Home() {
     setPrioritySelected(false);
   };
 
+  useEffect(() => {
+    let obj = Cookie.get('obj');
+    if (obj) {
+      let jsonObj = JSON.parse(obj);
+      dispatch(saveArr(jsonObj));
+    }
+  }, []);
+
   const [prioritySelected, setPrioritySelected] = useState(false);
 
-  const [dataForInfo, setDataForInfo] = useState(null);
-
   const handleInfoModalShow = (id) => {
-    debugger;
     dispatch(loadDataForInfo(id, task__arr));
     dispatch(infoToggleModalAC());
+  };
+  const [convertDate, setConvertDate] = useState(null);
+
+  const convertDateFunc = (date) => {
+    let newDate = Date.parse(date);
+    let d = new Date(newDate);
+    let type = typeof d;
+    let yaer = d.getFullYear();
+    let month = d.getMonth() + 1;
+    let day = d.getDate();
+    let stringCorrectDate = `${day} : ${month} : ${yaer}`;
+    return stringCorrectDate;
   };
 
   return (
@@ -204,11 +226,12 @@ export default function Home() {
                             <h3 className="item_title">{item.name}</h3>
                             <br />
                             <div className="item_text">
-                              {item.text.length >= 20 &&
-                                item.text.slice(0, 20) + '...'}
+                              {item.text.length >= 20
+                                ? item.text.slice(0, 20) + '...'
+                                : item.text}
                             </div>
                             <div className="buttons">
-                              <button className="card__btn"> Previous</button>
+                              <button className="card__btn"> Prev</button>
                               <button
                                 className="card__btn"
                                 onClick={() => handleNextBtn(item)}
@@ -218,9 +241,8 @@ export default function Home() {
                             </div>
                             <div className="date">
                               <span>Creation date: </span>
-                              <span>{item.dateTime.getDate()}</span> :
-                              <span> {item.dateTime.getMonth() + 1}</span> :
-                              <span> {item.dateTime.getFullYear()}</span> <br />
+                              {convertDateFunc(item.dateTime)}
+                              <br />
                               <span>Must be complited: </span>
                               <span
                                 className={
@@ -229,31 +251,8 @@ export default function Home() {
                                     : 'green'
                                 }
                               >
-                                {item.compliteDate.getDate()}
+                                {convertDateFunc(item.compliteDate)}
                               </span>{' '}
-                              :
-                              <span
-                                className={
-                                  item.compliteDate < item.dateTime
-                                    ? 'red'
-                                    : 'green'
-                                }
-                              >
-                                {' '}
-                                {item.compliteDate.getMonth() + 1}
-                              </span>{' '}
-                              :
-                              <span
-                                className={
-                                  item.compliteDate < item.dateTime
-                                    ? 'red'
-                                    : 'green'
-                                }
-                              >
-                                {' '}
-                                {item.compliteDate.getFullYear()}
-                              </span>{' '}
-                              <br />
                               <div
                                 onClick={() => handleInfoModalShow(item.id)}
                                 className="detailed"
@@ -333,7 +332,7 @@ export default function Home() {
                                 onClick={() => handlePrevBtn(item)}
                               >
                                 {' '}
-                                Previous
+                                Prev
                               </button>
                               <button
                                 className="card__btn"
@@ -345,9 +344,8 @@ export default function Home() {
                             </div>
                             <div className="date">
                               <span>Creation date: </span>
-                              <span>{item.dateTime.getDate()}</span> :
-                              <span> {item.dateTime.getMonth() + 1}</span> :
-                              <span> {item.dateTime.getFullYear()}</span> <br />
+                              {convertDateFunc(item.dateTime)}
+                              <br />
                               <span>Must be complited: </span>
                               <span
                                 className={
@@ -356,31 +354,8 @@ export default function Home() {
                                     : 'green'
                                 }
                               >
-                                {item.compliteDate.getDate()}
+                                {convertDateFunc(item.compliteDate)}
                               </span>{' '}
-                              :
-                              <span
-                                className={
-                                  item.compliteDate < item.dateTime
-                                    ? 'red'
-                                    : 'green'
-                                }
-                              >
-                                {' '}
-                                {item.compliteDate.getMonth() + 1}
-                              </span>{' '}
-                              :
-                              <span
-                                className={
-                                  item.compliteDate < item.dateTime
-                                    ? 'red'
-                                    : 'green'
-                                }
-                              >
-                                {' '}
-                                {item.compliteDate.getFullYear()}
-                              </span>{' '}
-                              <br />
                               <div
                                 onClick={() => handleInfoModalShow(item.id)}
                                 className="detailed"
@@ -459,7 +434,7 @@ export default function Home() {
                                 onClick={() => handlePrevBtn(item)}
                               >
                                 {' '}
-                                Previous
+                                Prev
                               </button>
                               <button
                                 className="card__btn"
@@ -471,9 +446,8 @@ export default function Home() {
                             </div>
                             <div className="date">
                               <span>Creation date: </span>
-                              <span>{item.dateTime.getDate()}</span> :
-                              <span> {item.dateTime.getMonth() + 1}</span> :
-                              <span> {item.dateTime.getFullYear()}</span> <br />
+                              {convertDateFunc(item.dateTime)}
+                              <br />
                               <span>Must be complited: </span>
                               <span
                                 className={
@@ -482,31 +456,8 @@ export default function Home() {
                                     : 'green'
                                 }
                               >
-                                {item.compliteDate.getDate()}
+                                {convertDateFunc(item.compliteDate)}
                               </span>{' '}
-                              :
-                              <span
-                                className={
-                                  item.compliteDate < item.dateTime
-                                    ? 'red'
-                                    : 'green'
-                                }
-                              >
-                                {' '}
-                                {item.compliteDate.getMonth() + 1}
-                              </span>{' '}
-                              :
-                              <span
-                                className={
-                                  item.compliteDate < item.dateTime
-                                    ? 'red'
-                                    : 'green'
-                                }
-                              >
-                                {' '}
-                                {item.compliteDate.getFullYear()}
-                              </span>{' '}
-                              <br />
                               <div
                                 onClick={() => handleInfoModalShow(item.id)}
                                 className="detailed"
