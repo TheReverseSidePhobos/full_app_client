@@ -4,23 +4,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { infoToggleModalAC } from '../../redux/actions/task_actions';
 import DatePicker from 'react-datepicker';
 import { Formik, Field, Form } from 'formik';
+import Image from 'next/image';
 
 import {
   saveTask,
   addName,
   addText,
-  setPriority
+  setPriority,
+  sendComment,
+  changedName,
+  changedComment
 } from '../../redux/actions/task_actions';
 
 const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
-  const { taskName, textTask, taskPriority, selectedForInfo, task__arr } = useSelector(
-    (state) => state.task
-  );
+  const { taskName, textTask, taskPriority, selectedForInfo, task__arr } =
+    useSelector((state) => state.task);
   const [dtemp, setDtemp] = useState(null);
   useEffect(() => {
     let dtm = Date.parse(selectedForInfo.dateTime);
     let dm = new Date(dtm);
-    setDtemp(dm)
+    setDtemp(dm);
   }, [selectedForInfo]);
 
   const dispatch = useDispatch();
@@ -68,6 +71,30 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
   useEffect(() => {
     console.log(temp);
   }, [temp]);
+  const [commentBtn, setCommentBtn] = useState(true);
+
+  const handleCommentClick = (e) => {
+    setCommentBtn(!commentBtn);
+  };
+
+  const { userName, comment, comments } = useSelector((state) => state.comment);
+
+  const handleSubmit = () => {
+    debugger;
+    dispatch(sendComment(userName, comment, comments.length));
+  };
+
+  const HandleInput = (e) => {
+    dispatch(changedName(e.target.value));
+  };
+  const handleComment = (e) => {
+    dispatch(changedComment(e.target.value));
+  };
+
+  const handleDeleteComment = () => {
+    //dispatch()
+  }
+
   return (
     <div className={style.modal}>
       <h1>Info Modal</h1>
@@ -80,9 +107,6 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
           priority: '',
           dp: '',
           textTask: ''
-        }}
-        onSubmit={(values) => {
-          handleCloseModal();
         }}
       >
         <Form className="form">
@@ -129,6 +153,65 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
                   {convertDateFunc(selectedForInfo.compliteDate).toString()}
                 </div>
                 <br />
+              </div>
+            </div>
+            <div className={style.comments}>
+              <div className={style.comment_buttons}>
+                <div
+                  onClick={handleCommentClick}
+                  className={`${style.comment_buttons_item}`}
+                >
+                  Leave Comment
+                </div>
+                <div
+                  onClick={(e) => handleCommentClick(e)}
+                  className={style.comment_buttons_item}
+                >
+                  Show all
+                </div>
+              </div>
+              <div className={style.comments_field}>
+                {commentBtn ? (
+                  <form onSubmit={handleSubmit} className={style.form}>
+                    <input
+                      value={userName}
+                      onChange={(e) => HandleInput(e)}
+                      placeholder="your name"
+                    />
+                    <br />
+                    <textarea
+                      value={comment}
+                      onChange={(e) => handleComment(e)}
+                      placeholder="your comment"
+                    ></textarea>
+                    <br />
+                    <button type="submit" onClick={handleSubmit}>
+                      Send
+                    </button>
+                  </form>
+                ) : (
+                  <div>
+                    {comments.map((item) => (
+                      <div className={style.comment_item}>
+                        <div className="pic">
+                          <Image
+                            src={'/user.png'}
+                            alt="user pic"
+                            width={50}
+                            height={50}
+                          />
+                        </div>
+                        <div className={style.titleAndText}>
+                          <div>
+                            <strong className={style.names}>{item.name}</strong>
+                          </div>
+                          <div className={style.com}>{item.comment}</div>
+                        </div>
+                        <div onClick={handleDeleteComment} className={style.close}>X</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

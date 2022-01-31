@@ -8,3 +8,6 @@ export const ADD_TEXT = 'ADD_TEXT';
 export const CHANGE_STATUS = 'CHANGE_STATUS';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const SET_PRIORITY = 'SET_PRIORITY';
+export const SEND_COMMENT = 'SEND_COMMENT';
+export const CHANGE_NAME = 'CHANGE_NAME';
+export const CHANGE_COMMENT = 'CHANGE_COMMENT';

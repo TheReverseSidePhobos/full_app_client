@@ -1,3 +1,4 @@
+@import '../styles/colors.scss';
 html,
 body {
   font-family: 'Outfit', sans-serif;
@@ -39,7 +40,7 @@ ul li {
 
 //header
 .header {
-  background-color: rgb(175, 218, 235);
+  background-color: $main;
   min-width: 100px;
   margin-bottom: 10px;
   .nav ul {
@@ -87,7 +88,7 @@ a.selected {
 }
 
 .makeTaskBtn {
-  background-color: rgb(175, 218, 235);
+  background-color: $main;
   padding: 10px;
   border-radius: 37px;
   width: 200px;
@@ -103,7 +104,7 @@ a.selected {
 .footer {
   text-align: center;
   margin-top: auto;
-  background-color: rgb(175, 218, 235);
+  background-color: $main;
   padding: 6px 0;
 }
 //footer
@@ -148,13 +149,13 @@ a.selected {
 }
 .card__btn {
   border: none;
-  background-color: rgb(175, 218, 235);
+  background-color: $main;
   padding: 8px 18px;
   border-radius: 5px;
   font-size: 20px;
   &:hover {
     background-color: #000;
-    color: rgb(175, 218, 235);
+    color: $main;
     cursor: pointer;
   }
 }
@@ -219,6 +220,6 @@ a.selected {
   cursor: pointer;
   background-color: #f0f0f0;
   &:hover {
-    background-color: rgb(175, 218, 235);
+    background-color: $main;
   }
 }

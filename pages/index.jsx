@@ -323,8 +323,9 @@ export default function Home() {
                             <h3 className="item_title">{item.name}</h3>
                             <br />
                             <div className="item_text">
-                              {item.text.length >= 30 &&
-                                item.text.slice(0, 30) + '...'}
+                              {item.text.length >= 20
+                                ? item.text.slice(0, 20) + '...'
+                                : item.text}
                             </div>
                             <div className="buttons">
                               <button
@@ -425,8 +426,9 @@ export default function Home() {
                             <h3 className="item_title">{item.name}</h3>
                             <br />
                             <div className="item_text">
-                              {item.text.length >= 30 &&
-                                item.text.slice(0, 30) + '...'}
+                              {item.text.length >= 20
+                                ? item.text.slice(0, 20) + '...'
+                                : item.text}
                             </div>
                             <div className="buttons">
                               <button

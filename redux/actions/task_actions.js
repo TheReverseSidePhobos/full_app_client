@@ -91,6 +91,48 @@ export const addText = (text) => {
     text
   };
 };
+export const sendComment = (name, comment, count_comments) => {
+  debugger
+  return async (dispatch) => {
+    let com_obj = {
+      id: count_comments + 1,
+      name,
+      comment,
+    }
+    dispatch(commentF(com_obj))
+  }
+};
+
+
+const commentF = (obj) => {
+  debugger
+  return {
+    type: types.SEND_COMMENT,
+    payload: obj
+  };
+};
+export const changedName = (userName) => {
+  return {
+    type: types.CHANGE_NAME,
+    userName
+  };
+};
+export const changedComment = (comment) => {
+  return {
+    type: types.CHANGE_COMMENT,
+    comment
+  };
+};
+
+
+
+
+
+
+
+
+
+
 export const change = (task__arr) => {
   return {
     type: types.CHANGE_STATUS,
