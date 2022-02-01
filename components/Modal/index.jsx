@@ -29,12 +29,11 @@ const Modal = ({ dateFromDataPicker }) => {
   };
   const handeTextChanged = (e) => {
     dispatch(addText(e.target.value));
-      debugger;
-      if (!e.target.value) {
-        setTemp(false);
-      } else {
-        setTemp(true);
-      }
+    if (!e.target.value) {
+      setTemp(false);
+    } else {
+      setTemp(true);
+    }
   };
 
   const handePriorityChanged = (e) => {
@@ -45,7 +44,6 @@ const Modal = ({ dateFromDataPicker }) => {
 
   const [temp, setTemp] = useState(true);
   const handleTouched = (e) => {
-    debugger;
     if (!e.target.value) {
       setTemp(false);
     } else {
@@ -69,7 +67,6 @@ const Modal = ({ dateFromDataPicker }) => {
           textTask: ''
         }}
         onSubmit={(values) => {
-          debugger;
           dispatch(
             saveTask(
               taskName,
@@ -81,7 +78,7 @@ const Modal = ({ dateFromDataPicker }) => {
               task__arr
             )
           );
-          
+
           handleCloseModal();
         }}
       >

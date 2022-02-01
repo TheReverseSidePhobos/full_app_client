@@ -13,8 +13,10 @@ import {
   setPriority,
   sendComment,
   changedName,
-  changedComment
+  changedComment,
+  saveComArr
 } from '../../redux/actions/task_actions';
+import Cookie from 'js-cookie';
 
 const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
   const { taskName, textTask, taskPriority, selectedForInfo, task__arr } =
@@ -25,7 +27,6 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
     let dm = new Date(dtm);
     setDtemp(dm);
   }, [selectedForInfo]);
-
   const dispatch = useDispatch();
   const handleCloseModal = () => {
     dispatch(infoToggleModalAC());
@@ -68,20 +69,17 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
       setTemp(true);
     }
   };
-  useEffect(() => {
-    console.log(temp);
-  }, [temp]);
+
   const [commentBtn, setCommentBtn] = useState(true);
 
-  const handleCommentClick = (e) => {
-    setCommentBtn(!commentBtn);
+  const handleCommentClick = (boo) => {
+    setCommentBtn(boo);
   };
 
   const { userName, comment, comments } = useSelector((state) => state.comment);
 
-  const handleSubmit = () => {
-    debugger;
-    dispatch(sendComment(userName, comment, comments.length));
+  const handleSubmit = (idTask) => {
+    dispatch(sendComment(userName, comment, comments.length, idTask, comments));
   };
 
   const HandleInput = (e) => {
@@ -91,8 +89,28 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
     dispatch(changedComment(e.target.value));
   };
 
-  const handleDeleteComment = () => {
-    //dispatch()
+  useEffect(() => {
+    debugger;
+    let comment__Arr = Cookie.get('comments');
+    if (comment__Arr) {
+      let cArr = JSON.parse(comment__Arr);
+      dispatch(saveComArr(cArr));
+    }
+  }, []);
+
+  const handleDeleteComment = (idCom, taskId) => {
+    debugger;
+    let idC;
+    console.log('start: ', comments);
+    if (selectedForInfo.id == taskId) {
+      comments.map((com) => {
+        com.id == idCom && comments.splice(com.id, 1);
+      });
+    }
+    console.log('end: ', comments);
+    dispatch(saveComArr(comments));
+    const comArrJson = JSON.stringify(comments);
+    Cookie.set('comments', comArrJson);
   };
 
   return (
@@ -158,13 +176,13 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
             <div className={style.comments}>
               <div className={style.comment_buttons}>
                 <div
-                  onClick={handleCommentClick}
+                  onClick={() => handleCommentClick(true)}
                   className={`${style.comment_buttons_item}`}
                 >
                   Leave Comment
                 </div>
                 <div
-                  onClick={(e) => handleCommentClick(e)}
+                  onClick={() => handleCommentClick(false)}
                   className={style.comment_buttons_item}
                 >
                   Show all
@@ -172,7 +190,7 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
               </div>
               <div className={style.comments_field}>
                 {commentBtn ? (
-                  <form onSubmit={handleSubmit} className={style.form}>
+                  <div className={style.form}>
                     <input
                       value={userName}
                       onChange={(e) => HandleInput(e)}
@@ -185,39 +203,51 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
                       placeholder="your comment"
                     ></textarea>
                     <br />
-                    <button type="submit" onClick={handleSubmit}>
+                    <button
+                      type="submit"
+                      onClick={() => handleSubmit(selectedForInfo.id)}
+                    >
                       Send
                     </button>
-                  </form>
+                  </div>
                 ) : (
                   <div>
                     {comments.length > 0 ? (
-                      comments.map((item) => (
-                        <div className={style.comment_item}>
-                          <div className="pic">
-                            <Image
-                              src={'/user.png'}
-                              alt="user pic"
-                              width={50}
-                              height={50}
-                            />
-                          </div>
-                          <div className={style.titleAndText}>
-                            <div>
-                              <strong className={style.names}>
-                                {item.name}
-                              </strong>
-                            </div>
-                            <div className={style.com}>{item.comment}</div>
-                          </div>
-                          <div
-                            onClick={handleDeleteComment}
-                            className={style.close}
-                          >
-                            X
-                          </div>
-                        </div>
-                      ))
+                      comments.map(
+                        (item) =>
+                          item.idTask == selectedForInfo.id && (
+                            <>
+                              <div className={style.comment_item}>
+                                <div className="pic">
+                                  <Image
+                                    src={'/user.png'}
+                                    alt="user pic"
+                                    width={50}
+                                    height={50}
+                                  />
+                                </div>
+                                <div className={style.titleAndText}>
+                                  <div>
+                                    <strong className={style.names}>
+                                      {item.name}
+                                    </strong>
+                                  </div>
+                                  <div className={style.com}>
+                                    {item.comment}
+                                  </div>
+                                </div>
+                                <div
+                                  onClick={() =>
+                                    handleDeleteComment(item.id, item.idTask)
+                                  }
+                                  className={style.close}
+                                >
+                                  X
+                                </div>
+                              </div>
+                            </>
+                          )
+                      )
                     ) : (
                       <div>no one comments yet</div>
                     )}

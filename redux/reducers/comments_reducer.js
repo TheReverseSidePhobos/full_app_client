@@ -19,10 +19,20 @@ const comments_reducer = (state = initialState, action) => {
         comment: action.comment
       };
     case types.SEND_COMMENT:
-      debugger;
       return {
         ...state,
-        comments: [...state.comments, action.payload],
+        comments: action.payload
+      };
+    case types.SAVE_COM_ARR:
+      return {
+        ...state,
+        comments: action.payload,
+        userName: '',
+        comment: ''
+      };
+    case types.SEND_COM_CLEAR:
+      return {
+        ...state,
         userName: '',
         comment: ''
       };

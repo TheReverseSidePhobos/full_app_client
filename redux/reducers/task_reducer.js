@@ -35,7 +35,9 @@ const taskReducer = (state = initialState, action) => {
     case types.SAVE_ARR:
       return {
         ...state,
-        task__arr: action.payload
+        task__arr: action.payload,
+        taskName: '',
+        textTask: ''
       };
     case types.SAVE_TASK:
       return {

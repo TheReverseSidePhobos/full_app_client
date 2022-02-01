@@ -23,6 +23,13 @@ export const saveArr = (objArr) => {
     payload: objArr
   };
 };
+export const saveComArr = (objArr) => {
+  debugger
+  return {
+    type: types.SAVE_COM_ARR,
+    payload: objArr
+  };
+};
 export const saveObjForInfo = (obj) => {
   return {
     type: types.SAVE_OBJ_FOR_INFO,
@@ -36,6 +43,7 @@ export const loadDataForInfo = (id, task__arr) => {
     dispatch(saveObjForInfo(selectedObj));
   };
 };
+
 export const saveTask = (
   name,
   text,
@@ -49,7 +57,6 @@ export const saveTask = (
     if (!taskPriority) {
       taskPriority = 'lowest';
     }
-    console.log('task__arr from save task: ', task__arr);
     let taskObj = {
       id,
       name,
@@ -67,6 +74,25 @@ export const saveTask = (
     dispatch(saveArr(newArr));
   };
 };
+
+export const sendComment = (name, comment, count_comments, idTask, cooments__arr) => {
+  debugger
+  return async (dispatch) => {
+    let com_obj = {
+      id: count_comments,
+      name,
+      comment,
+      idTask
+    }
+    let newComArr = cooments__arr;
+    debugger
+    newComArr.push(com_obj)
+    let commentsJson = JSON.stringify(newComArr);
+    Cookie.set('comments', commentsJson)
+    dispatch(sendComClear())
+  }
+};
+
 export const changePriority = (priority, item, task__arr) => {
   return async (dispatch) => {
     task__arr.map((i) => {
@@ -85,23 +111,18 @@ export const addName = (name) => {
     name
   };
 };
+export const sendComClear = () => {
+  return {
+    type: types.SEND_COM_CLEAR
+  };
+};
 export const addText = (text) => {
   return {
     type: types.ADD_TEXT,
     text
   };
 };
-export const sendComment = (name, comment, count_comments) => {
-  debugger
-  return async (dispatch) => {
-    let com_obj = {
-      id: count_comments + 1,
-      name,
-      comment,
-    }
-    dispatch(commentF(com_obj))
-  }
-};
+
 
 
 const commentF = (obj) => {
