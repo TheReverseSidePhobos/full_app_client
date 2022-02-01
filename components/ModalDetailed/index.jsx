@@ -82,15 +82,36 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
     dispatch(sendComment(userName, comment, comments.length, idTask, comments));
   };
 
+  useEffect(() => {
+    if (
+      (userName == '' && userName.trim() == '') ||
+      (comment == '' && comment.trim() == '')
+    ) {
+      setSendBlock(true);
+    } else {
+      setSendBlock(false);
+    }
+  }, [userName, comment]);
+  const [nameState, setNameState] = useState(false);
+  const [commentState, setCommentState] = useState(false);
   const HandleInput = (e) => {
+    if (e.target.value == '') {
+      setNameState(true);
+    } else {
+      setNameState(false);
+    }
     dispatch(changedName(e.target.value));
   };
   const handleComment = (e) => {
+    if (e.target.value == '') {
+      setCommentState(true);
+    } else {
+      setCommentState(false);
+    }
     dispatch(changedComment(e.target.value));
   };
 
   useEffect(() => {
-    debugger;
     let comment__Arr = Cookie.get('comments');
     if (comment__Arr) {
       let cArr = JSON.parse(comment__Arr);
@@ -99,19 +120,17 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
   }, []);
 
   const handleDeleteComment = (idCom, taskId) => {
-    debugger;
-    let idC;
-    console.log('start: ', comments);
     if (selectedForInfo.id == taskId) {
       comments.map((com) => {
         com.id == idCom && comments.splice(com.id, 1);
       });
     }
-    console.log('end: ', comments);
     dispatch(saveComArr(comments));
     const comArrJson = JSON.stringify(comments);
     Cookie.set('comments', comArrJson);
   };
+
+  const [sendBlock, setSendBlock] = useState(true);
 
   return (
     <div className={style.modal}>
@@ -177,13 +196,21 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
               <div className={style.comment_buttons}>
                 <div
                   onClick={() => handleCommentClick(true)}
-                  className={`${style.comment_buttons_item}`}
+                  className={
+                    commentBtn
+                      ? `${style.comment_buttons_item} ${style.selected}`
+                      : `${style.comment_buttons_item}`
+                  }
                 >
                   Leave Comment
                 </div>
                 <div
                   onClick={() => handleCommentClick(false)}
-                  className={style.comment_buttons_item}
+                  className={
+                    !commentBtn
+                      ? `${style.comment_buttons_item} ${style.selected}`
+                      : `${style.comment_buttons_item}`
+                  }
                 >
                   Show all
                 </div>
@@ -196,16 +223,27 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
                       onChange={(e) => HandleInput(e)}
                       placeholder="your name"
                     />
+                    {nameState && (
+                      <div style={{ fontSize: '15px', color: 'red' }}>
+                        Поле name не может быть пустым
+                      </div>
+                    )}
                     <br />
                     <textarea
                       value={comment}
                       onChange={(e) => handleComment(e)}
                       placeholder="your comment"
                     ></textarea>
+                    {commentState && (
+                      <div style={{ fontSize: '15px', color: 'red' }}>
+                        Поле name не может быть пустым
+                      </div>
+                    )}
                     <br />
                     <button
                       type="submit"
                       onClick={() => handleSubmit(selectedForInfo.id)}
+                      disabled={sendBlock}
                     >
                       Send
                     </button>
@@ -237,12 +275,12 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
                                   </div>
                                 </div>
                                 <div
-                                  onClick={() =>
-                                    handleDeleteComment(item.id, item.idTask)
-                                  }
-                                  className={style.close}
-                                >
-                                  X
+                                    onClick={(e) =>
+                                      handleDeleteComment(item.id, item.idTask)
+                                    }
+                                    className={style.close}
+                                  >
+                                    X
                                 </div>
                               </div>
                             </>

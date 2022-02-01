@@ -43,13 +43,17 @@ ul li {
   background-color: $main;
   min-width: 100px;
   margin-bottom: 10px;
+
   .nav ul {
-    width: 260px;
+    font-family: helvetica;
     display: flex;
-    margin: 0 auto;
+    justify-content: space-between;
     padding: 15px 0;
+    .left_title{
+      display: flex;
+    }
     li {
-      font-size: 20px;
+      font-size: 24px;
       margin: 0px 10px;
       font-weight: 700;
       letter-spacing: 0.2em;
@@ -152,7 +156,7 @@ a.selected {
   background-color: $main;
   padding: 8px 18px;
   border-radius: 5px;
-  font-size: 20px;
+  font-size: 26px;
   &:hover {
     background-color: #000;
     color: $main;
@@ -218,8 +222,133 @@ a.selected {
   margin: 10px 0;
   padding: 10px 0;
   cursor: pointer;
+  font-size: 24px;
   background-color: #f0f0f0;
   &:hover {
     background-color: $main;
   }
 }
+
+//cards
+
+@media (max-width: 1250px) {
+  .cards,
+  .title {
+    max-width: 240px;
+  }
+  .main {
+    width: 68%;
+  }
+  .container {
+    margin: 0 10px;
+  }
+}
+@media (max-width: 1080px) {
+  .cards,
+  .title {
+    max-width: 230px;
+  }
+  .main {
+    width: 58%;
+  }
+  .container {
+    margin: 0 10px;
+  }
+}
+@media (max-width: 992px) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 96%;
+  }
+  .cards,
+  .title {
+    max-width: 100%;
+  }
+  .main {
+    width: 100%;
+  }
+  .title {
+    font-size: 28px;
+  }
+  .makeTaskBtn {
+    margin: 0 auto;
+  }
+  .sidebar {
+    text-align: center;
+  }
+  .table {
+    margin-left: 0px;
+  }
+}
+@media (max-width: 767px) {
+  .table {
+    display: flex;
+    flex-direction: column;
+  }
+  .new_request,
+  .in_progress,
+  .done {
+    min-width: 80%;
+    margin: 0 auto;
+  }
+  .card__btn {
+    font-size: 30px;
+  }
+  .item_text {
+    font-size: 30px;
+  }
+
+  .item_title {
+    font-size: 34px;
+  }
+  .priority {
+    font-size: 26px;
+  }
+  .detailed {
+    font-size: 28px;
+  }
+}
+@media (max-width: 480px) {
+  .new_request,
+  .in_progress,
+  .done {
+    min-width: 100%;
+    margin: 0 auto;
+    min-height: 100%;
+  }
+  .card__btn {
+    font-size: 30px;
+  }
+  .item_text {
+    font-size: 30px;
+  }
+
+  .item_title {
+    font-size: 34px;
+  }
+  .priority {
+    font-size: 26px;
+  }
+  .detailed {
+    font-size: 28px;
+  }
+}
+// @media (max-width: 360px) {
+//   .card__btn {
+//     font-size: 30px;
+//   }
+//   .item_text {
+//     font-size: 30px;
+//   }
+
+//   .item_title {
+//     font-size: 34px;
+//   }
+//   .priority {
+//     font-size: 26px;
+//   }
+//   .detailed {
+//     font-size: 28px;
+//   }
+// }

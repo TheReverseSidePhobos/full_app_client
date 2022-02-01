@@ -20,11 +20,13 @@
 }
 .closeModal {
   position: absolute;
-  right: 10px;
-  top: 2px;
+  top: 0px;
+  right: 5px;
   cursor: pointer;
+  transition: all 0.2s linear;
   &:hover {
-    color: rgb(219, 219, 219);
+    color: rgb(175, 8, 8);
+    transform: rotate(90deg);
   }
 }
 .form_container {
@@ -116,5 +118,10 @@
   border: none;
   &:focus {
     outline: none;
+  }
+}
+@media (max-width: 1200px) {
+  .dp {
+    width: 50%;
   }
 }

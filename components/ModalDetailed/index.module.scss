@@ -22,19 +22,26 @@
 }
 .closeModal {
   position: absolute;
-  right: 10px;
-  top: 2px;
+  top: 5px;
+  right: 5px;
   cursor: pointer;
+  transition: all 0.2s linear;
   &:hover {
-    color: rgb(219, 219, 219);
+    color: rgb(175, 8, 8);
+    transform: rotate(90deg);
   }
 }
 .info_container {
+  flex-wrap: wrap;
   margin-top: 10px;
   display: flex;
   justify-content: space-around;
 }
+.datePicker {
+  margin-right: 10px;
+}
 .otherFiled {
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -60,12 +67,17 @@
   .field__itemBtn,
   .field__itemBtn__disabled {
     min-height: 30px;
-    margin: 10px 0;
     border-radius: 10px;
-    padding: 5px;
     outline: none;
     border: none;
+    margin: 10px 0;
+    padding: 5px;
+    margin-top: -10px;
   }
+  textarea.field__item {
+    margin-top: 10px;
+  }
+
   .dp {
     min-height: 30px;
     margin: 10px 0;
@@ -211,11 +223,17 @@
   font-size: 16px;
 }
 .close {
-  color: red;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  &:hover {
-    cursor: pointer;
+}
+
+@media (min-width: 1000px) {
+  .info_container > div {
+    margin: 0 10px;
+  }
+}
+@media (max-width: 1000px) {
+  .modal {
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%, -50%);
   }
 }
