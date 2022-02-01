@@ -278,7 +278,7 @@ const ModalDetailed = ({ name, text, priority, dateStart, dateFinish }) => {
                                     onClick={(e) =>
                                       handleDeleteComment(item.id, item.idTask)
                                     }
-                                    className={style.close}
+                                    className={style.closeModal}
                                   >
                                     X
                                 </div>

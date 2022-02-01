@@ -229,6 +229,10 @@
   .info_container > div {
     margin: 0 10px;
   }
+  .modal {
+    left: 50%;
+    top: 70%;
+  }
 }
 @media (max-width: 1000px) {
   .modal {

@@ -10,19 +10,19 @@ const Header = () => {
               <li>
                 <Link href={'/'}>
                   <a>
-                    <h3>Home</h3>
+                    <h5>Home</h5>
                   </a>
                 </Link>
               </li>
               <li>
                 <Link href={'/aboutUs'}>
-                  <a>About Us</a>
+                  <a><h5>About Us</h5></a>
                 </Link>
               </li>
             </div>
             <li>
               <Link href={'/signup'}>
-                <a>Sign up</a>
+                <a><h5>Sign up</h5></a>
               </Link>
             </li>
           </ul>
