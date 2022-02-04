@@ -58,9 +58,38 @@ ul li {
       font-weight: 700;
       letter-spacing: 0.2em;
     }
+    .right_title {
+      display: flex;
+    }
+  }
+  @media (max-width: 1292px) {
+    .container {
+      width: 80%;
+      margin: 0 auto;
+    }
+  }
+  @media (max-width: 1024px) {
+    .container {
+      width: 70%;
+      margin: 0 auto;
+    }
+  }
+  @media (max-width: 1000px) {
+    .left_title, .right_title{
+      h5{
+        display: none;
+      }
+    }
+    .burger{
+      display: block;
+    }
   }
 }
 //header
+
+.burger{
+  display: none;
+}
 
 .text {
   font-family: 'Outfit', sans-serif;
@@ -237,7 +266,7 @@ a.selected {
     max-width: 240px;
   }
   .main {
-    width: 68%;
+    width: 100%;
   }
   .container {
     margin: 0 10px;
@@ -249,7 +278,7 @@ a.selected {
     max-width: 230px;
   }
   .main {
-    width: 58%;
+    width: 100%;
   }
   .container {
     margin: 0 10px;
@@ -352,3 +381,7 @@ a.selected {
 //     font-size: 28px;
 //   }
 // }
+
+.btn__active {
+  background-color: green;
+}

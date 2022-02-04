@@ -33,23 +33,6 @@ export default function Home() {
   const { taskName, textTask, taskStatus } = useSelector((state) => state.task);
   let { task__arr } = useSelector((state) => state.task);
 
-  // const handleDayBtn = (e) => {
-  //   setDay(e.target.outerText);
-  //   if (e.target.outerText === 'Tomorrow') {
-  //     let day = startDate.getDate() + 1;
-  //     let month = startDate.getMonth();
-  //     let year = startDate.getFullYear();
-  //     let newDate = new Date(year, month, day);
-  //     if (!tomorrow) {
-  //       setStartDate(newDate);
-  //     }
-  //     setTomorrow(true);
-  //   } else if (e.target.outerText === 'Today') {
-  //     let today = new Date();
-  //     setStartDate(today);
-  //     setTomorrow(false);
-  //   }
-  // };
   const toggleModal = () => {
     dispatch(toggleModalAC());
   };

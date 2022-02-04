@@ -1,6 +1,7 @@
 import * as types from '../actions/types';
 
 export const initialState = {
+  isLoggedIn: false,
   modal_show: false,
   info_modal_show: false,
   task__arr: [],
