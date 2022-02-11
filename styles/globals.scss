@@ -271,27 +271,6 @@ a.selected {
 
 //cards
 
-.getUsersBtn {
-  background-color: #fff;
-  border: 2px solid seagreen;
-  border-radius: 10px;
-  padding: 10px 30px;
-  margin: 20px 0;
-  &:hover {
-    cursor: pointer;
-    background-color: seagreen;
-    color: #fff;
-  }
-  &:active {
-    cursor: pointer;
-    background-color: #fff;
-    color: seagreen;
-  }
-}
-.btn2 {
-  margin-left: 10px;
-}
-
 //sideMenu
 .sideMenu {
   opacity: 1000;
@@ -313,6 +292,19 @@ a.selected {
   }
 }
 //sideMenu
+
+//select
+.my_select {
+  min-width: 100%;
+  min-height: 30px;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #afdaeb;
+  .my_option {
+    background-color: #afdaeb;
+  }
+}
+//select
 
 @media (max-width: 1250px) {
   .cards,

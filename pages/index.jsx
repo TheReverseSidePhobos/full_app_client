@@ -21,6 +21,7 @@ import {
   loadDataForInfo,
   saveArr
 } from '../redux/actions/task_actions';
+import Selection from '../components/Selection/Selection';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -100,7 +101,6 @@ export default function Home() {
 
   return (
     <div>
-
       {modal_show && <Modal dateFromDataPicker={startDate} />}
       {info_modal_show && <ModalDetailed />}
       <Layout>
@@ -125,6 +125,7 @@ export default function Home() {
               <div className="table">
                 <div className="new_request">
                   <div className="title new_request_title">New Requests</div>
+                  <Selection id="new" />
                   <div className="cards">
                     {task__arr &&
                       task__arr.map((item) =>
@@ -225,6 +226,7 @@ export default function Home() {
 
                 <div className="in_progress">
                   <div className="title in_progress_title">In Progress</div>
+                  <Selection id="progress" />
                   <div className="cards">
                     {task__arr &&
                       task__arr.map((item) =>
@@ -328,6 +330,7 @@ export default function Home() {
                 </div>
                 <div className="done">
                   <div className="title done_title">Done</div>
+                  <Selection id='done'/>
                   <div className="cards">
                     {task__arr &&
                       task__arr.map((item) =>

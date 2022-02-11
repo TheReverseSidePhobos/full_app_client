@@ -1,0 +1,20 @@
+.getUsersBtn {
+  background-color: #fff;
+  border: 2px solid seagreen;
+  border-radius: 10px;
+  padding: 10px 30px;
+  margin: 20px 0;
+  &:hover {
+    cursor: pointer;
+    background-color: seagreen;
+    color: #fff;
+  }
+  &:active {
+    cursor: pointer;
+    background-color: #fff;
+    color: seagreen;
+  }
+}
+.btn2 {
+  margin-left: 10px;
+}
