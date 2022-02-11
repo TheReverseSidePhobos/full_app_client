@@ -19,7 +19,11 @@ import {
   delete_item,
   changePriority,
   loadDataForInfo,
-  saveArr
+  saveArr,
+  changeItemLocationToPrg,
+  changeItemLocationToDone,
+  changeItemLocationToNew,
+  changeItemLocationToPrgFromDone
 } from '../redux/actions/task_actions';
 import Selection from '../components/Selection/Selection';
 
@@ -27,13 +31,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default function Home() {
   const [startDate, setStartDate] = useState(new Date());
-  const [day, setDay] = useState('Today');
-  const [tomorrow, setTomorrow] = useState(false);
   const dispatch = useDispatch();
   const { modal_show, info_modal_show } = useSelector((state) => state.task);
   const { taskName, textTask, taskStatus } = useSelector((state) => state.task);
-  let { task__arr } = useSelector((state) => state.task);
-
+  const { task__arr, tasks__new_req, tasks__In_Prg, tasks__Done } = useSelector(
+    (state) => state.task
+  );
   const toggleModal = () => {
     dispatch(toggleModalAC());
   };
@@ -41,15 +44,51 @@ export default function Home() {
   const handleNextBtn = (item) => {
     if (item.status == 'new') {
       dispatch(changeStatus(item.id, 'progress', task__arr));
+      dispatch(
+        changeItemLocationToPrg(
+          item.id,
+          'progress',
+          task__arr,
+          tasks__new_req,
+          tasks__In_Prg
+        )
+      );
     } else if (item.status == 'progress') {
       dispatch(changeStatus(item.id, 'done', task__arr));
+      dispatch(
+        changeItemLocationToDone(
+          item.id,
+          'done',
+          task__arr,
+          tasks__In_Prg,
+          tasks__Done
+        )
+      );
     }
   };
   const handlePrevBtn = (item) => {
     if (item.status == 'done') {
       dispatch(changeStatus(item.id, 'progress', task__arr));
+      dispatch(
+        changeItemLocationToPrgFromDone(
+          item.id,
+          'progress',
+          task__arr,
+          tasks__In_Prg,
+          tasks__Done
+        )
+      );
     } else if (item.status == 'progress') {
       dispatch(changeStatus(item.id, 'new', task__arr));
+      dispatch(
+        changeItemLocationToNew(
+          item.id,
+          'new',
+          task__arr,
+          tasks__In_Prg,
+          tasks__new_req
+        )
+      );
     }
   };
 
@@ -330,7 +369,7 @@ export default function Home() {
                 </div>
                 <div className="done">
                   <div className="title done_title">Done</div>
-                  <Selection id='done'/>
+                  <Selection id="done" />
                   <div className="cards">
                     {task__arr &&
                       task__arr.map((item) =>

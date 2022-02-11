@@ -16,7 +16,7 @@ const Modal = ({ dateFromDataPicker }) => {
   const { taskName, textTask, taskPriority } = useSelector(
     (state) => state.task
   );
-  const { task__arr } = useSelector((state) => state.task);
+  const { task__arr, tasks__new_req } = useSelector((state) => state.task);
 
   const dispatch = useDispatch();
 
@@ -75,7 +75,8 @@ const Modal = ({ dateFromDataPicker }) => {
               taskPriority,
               new Date(dateFromDataPicker).toString(),
               new Date(startDate).toString(),
-              task__arr
+              task__arr,
+              tasks__new_req
             )
           );
 

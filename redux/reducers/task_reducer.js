@@ -54,10 +54,27 @@ const taskReducer = (state = initialState, action) => {
         ...state,
         task__arr: action.task__arr
       };
+    case types.CHANGE_NEW_ARR:
+      return {
+        ...state,
+        tasks__new_req: action.tasks__new_req
+      };
+    case types.CHANGE_IN_PRG_ARR:
+      return {
+        ...state,
+        tasks__In_Prg: action.tasks__In_Prg
+      };
     case types.SAVE_ARR:
       return {
         ...state,
         task__arr: action.payload,
+        taskName: '',
+        textTask: ''
+      };
+    case types.SAVE_ARR_NEW:
+      return {
+        ...state,
+        tasks__new_req: action.payload,
         taskName: '',
         textTask: ''
       };
