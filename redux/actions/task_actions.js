@@ -6,6 +6,11 @@ export const toggleModalAC = () => {
     type: types.TOGGLE_MODAL
   };
 };
+export const setIsBurger = () => {
+  return {
+    type: types.SET_BURGER
+  };
+};
 export const infoToggleModalAC = () => {
   return {
     type: types.INFO_TOGGLE_MODAL

@@ -75,19 +75,30 @@ ul li {
     }
   }
   @media (max-width: 1000px) {
-    .left_title, .right_title{
-      h5{
+    .header {
+      min-height: 33px;
+    }
+
+    .left_title,
+    .right_title {
+      h5 {
         display: none;
       }
     }
-    .burger{
+    .burger {
       display: block;
     }
   }
 }
+.burger_wrapper {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
 //header
 
-.burger{
+.burger {
   display: none;
 }
 
@@ -260,6 +271,49 @@ a.selected {
 
 //cards
 
+.getUsersBtn {
+  background-color: #fff;
+  border: 2px solid seagreen;
+  border-radius: 10px;
+  padding: 10px 30px;
+  margin: 20px 0;
+  &:hover {
+    cursor: pointer;
+    background-color: seagreen;
+    color: #fff;
+  }
+  &:active {
+    cursor: pointer;
+    background-color: #fff;
+    color: seagreen;
+  }
+}
+.btn2 {
+  margin-left: 10px;
+}
+
+//sideMenu
+.sideMenu {
+  opacity: 1000;
+  position: absolute;
+  top: 43px;
+  left: 0;
+  width: 200px;
+  border-radius: 7px;
+  height: 260px;
+  background-color: #afdaeb;
+  padding: 20px;
+  a h5 {
+    margin-top: 20px;
+  }
+  li,
+  a {
+    list-style-type: none;
+    font-size: 26px;
+  }
+}
+//sideMenu
+
 @media (max-width: 1250px) {
   .cards,
   .title {
@@ -284,7 +338,7 @@ a.selected {
     margin: 0 10px;
   }
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .wrapper {
     display: flex;
     flex-direction: column;

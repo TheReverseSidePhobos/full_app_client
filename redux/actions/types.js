@@ -13,3 +13,11 @@ export const SEND_COMMENT = 'SEND_COMMENT';
 export const CHANGE_NAME = 'CHANGE_NAME';
 export const SEND_COM_CLEAR = 'SEND_COM_CLEAR';
 export const CHANGE_COMMENT = 'CHANGE_COMMENT';
+export const SET_BURGER = 'SET_BURGER';
+
+//sagas
+export const FETCH_USERS = 'FETCH_USERS';
+export const FETCH_USERS_SUCCEEDED = 'FETCH_USERS_SUCCEEDED';
+
+export const CLEAN_USERS = 'CLEAN_USERS';
+export const CLEAN_USERS_SUCCEEDED = 'CLEAN_USERS_SUCCEEDED';

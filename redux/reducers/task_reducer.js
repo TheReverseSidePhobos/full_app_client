@@ -1,6 +1,7 @@
 import * as types from '../actions/types';
 
 export const initialState = {
+  isBurger: true,
   isLoggedIn: false,
   modal_show: false,
   info_modal_show: false,
@@ -8,15 +9,32 @@ export const initialState = {
   taskName: '',
   textTask: '',
   taskPriority: '',
-  selectedForInfo: null
+  selectedForInfo: null,
+  users: null
 };
 
 const taskReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.SET_BURGER:
+      return {
+        ...state,
+        isBurger: !state.isBurger
+      };
     case types.TOGGLE_MODAL:
       return {
         ...state,
         modal_show: !state.modal_show
+      };
+    case types.FETCH_USERS_SUCCEEDED:
+      const users = action.payload.data;
+      return {
+        ...state,
+        users
+      };
+    case types.CLEAN_USERS:
+      return {
+        ...state,
+        users: null
       };
     case types.INFO_TOGGLE_MODAL:
       return {
