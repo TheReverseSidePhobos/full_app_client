@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
+import { checkAuth } from '../redux/actions/auth_actions';
 
 const Layout = ({ children }) => {
   const { isBurger } = useSelector((state) => state.task);
+  
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      dispatch(checkAuth());
+    }
+  }, [])
   return (
     <>
       <Head>

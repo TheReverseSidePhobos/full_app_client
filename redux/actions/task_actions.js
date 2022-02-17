@@ -55,6 +55,7 @@ export const loadDataForInfo = (id, task__arr) => {
 };
 
 export const saveTask = (
+  userId,
   name,
   text,
   id,
@@ -68,7 +69,9 @@ export const saveTask = (
     if (!taskPriority) {
       taskPriority = 'lowest';
     }
+    debugger
     let taskObj = {
+      userId,
       id,
       name,
       text,

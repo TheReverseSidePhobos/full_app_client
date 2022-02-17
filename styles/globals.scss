@@ -60,7 +60,22 @@ ul li {
     }
     .right_title {
       display: flex;
+      align-items: center;
+      .logout{
+        margin: 0 10px;
+        &:hover{
+          cursor: pointer;
+          color: rgb(97, 96, 96);
+        }
+      }
     }
+  }
+  .load{
+   padding-top: 4px; 
+  }
+  .you_should_be{
+    text-align: center;
+    color: red;
   }
   @media (max-width: 1292px) {
     .container {

@@ -19,6 +19,13 @@ export const CHANGE_NEW_ARR = 'CHANGE_NEW_ARR';
 export const CHANGE_IN_PRG_ARR = 'CHANGE_IN_PRG_ARR';
 export const CHANGE_DONE = 'CHANGE_DONE';
 
+//auth
+export const SET_AUTH = 'SET_AUTH';
+export const SET_USER = 'SET_USER';
+export const SET_LOADING = 'SET_LOADING';
+//auth
+
+
 //sagas
 export const FETCH_USERS = 'FETCH_USERS';
 export const FETCH_USERS_SUCCEEDED = 'FETCH_USERS_SUCCEEDED';

@@ -5,10 +5,14 @@ import cn from 'classnames';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useSelector } from 'react-redux';
-
+import { useDispatch } from 'react-redux';
+import {registration} from '../redux/actions/auth_actions';
+import { useRouter } from 'next/router';
 const Signup = () => {
   // const [isLoggedIn, setIsLoggedIn] = useState(true);
 
+
+  const router = useRouter();
   const { isLoggedIn } = useSelector((state) => state.task);
   const validationSchema = Yup.object({
     firstName: Yup.string().required(),
@@ -27,9 +31,13 @@ const Signup = () => {
     password: '',
     checkPassword: ''
   };
+  const dispatch = useDispatch();
 
   const handleSubmit = (values) => {
+    debugger
     console.log(JSON.stringify(values, null, 2));
+    dispatch(registration(values.email, values.password));
+    router.push("/");
   };
 
   const renderError = (message) => <p className={style.isDanger}>{message}</p>;

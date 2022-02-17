@@ -12,6 +12,7 @@ import Modal from '../components/Modal';
 import ModalDetailed from '../components/ModalDetailed';
 import Cookie from 'js-cookie';
 import { useSelector, useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 import {
   toggleModalAC,
   infoToggleModalAC,
@@ -25,21 +26,29 @@ import {
   changeItemLocationToNew,
   changeItemLocationToPrgFromDone
 } from '../redux/actions/task_actions';
+import {checkAuth} from '../redux/actions/auth_actions';
+
 import Selection from '../components/Selection/Selection';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default function Home() {
+  const {isAuth, user} = useSelector((state) => state.auth);
+
   const [startDate, setStartDate] = useState(new Date());
   const dispatch = useDispatch();
   const { modal_show, info_modal_show } = useSelector((state) => state.task);
-  const { taskName, textTask, taskStatus } = useSelector((state) => state.task);
   const { task__arr, tasks__new_req, tasks__In_Prg, tasks__Done } = useSelector(
     (state) => state.task
   );
   const toggleModal = () => {
     dispatch(toggleModalAC());
   };
+
+  debugger
+  const onlyMyTasks = task__arr.filter((item) => item.userId == user?.id);
+
+
 
   const handleNextBtn = (item) => {
     if (item.status == 'new') {
@@ -137,13 +146,21 @@ export default function Home() {
     let stringCorrectDate = `${day} : ${month} : ${yaer}`;
     return stringCorrectDate;
   };
-
+  const router = useRouter();
   return (
     <div>
       {modal_show && <Modal dateFromDataPicker={startDate} />}
       {info_modal_show && <ModalDetailed />}
       <Layout>
+
         {
+          !isAuth 
+          ? 
+          <div className='container'>
+            <h3 className='you_should_be'>For using our service you should be logged in</h3>
+            <p>Please go to <span style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={()=> {router.push("/signin");}}>login page</span></p>
+          </div>
+          :
           <div
             className={
               modal_show ? 'wrapper low_opacity container' : 'wrapper container'
@@ -164,10 +181,10 @@ export default function Home() {
               <div className="table">
                 <div className="new_request">
                   <div className="title new_request_title">New Requests</div>
-                  <Selection id="new" />
+                  {/* <Selection id="new" /> */}
                   <div className="cards">
-                    {task__arr &&
-                      task__arr.map((item) =>
+                    {onlyMyTasks &&
+                      onlyMyTasks.map((item) =>
                         item && item.status == 'new' ? (
                           <div className="card" key={item.id}>
                             <span
@@ -265,10 +282,10 @@ export default function Home() {
 
                 <div className="in_progress">
                   <div className="title in_progress_title">In Progress</div>
-                  <Selection id="progress" />
+                  {/* <Selection id="progress" /> */}
                   <div className="cards">
-                    {task__arr &&
-                      task__arr.map((item) =>
+                    {onlyMyTasks &&
+                      onlyMyTasks.map((item) =>
                         item && item.status == 'progress' ? (
                           <div className="card" key={item.id}>
                             <span
@@ -369,10 +386,10 @@ export default function Home() {
                 </div>
                 <div className="done">
                   <div className="title done_title">Done</div>
-                  <Selection id="done" />
+                  {/* <Selection id="done" /> */}
                   <div className="cards">
-                    {task__arr &&
-                      task__arr.map((item) =>
+                    {onlyMyTasks &&
+                      onlyMyTasks.map((item) =>
                         item && item.status == 'done' ? (
                           <div className="card" key={item.id}>
                             <span

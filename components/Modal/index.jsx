@@ -13,6 +13,8 @@ import {
 } from './../../redux/actions/task_actions';
 
 const Modal = ({ dateFromDataPicker }) => {
+  const {isAuth, user} = useSelector((state) => state.auth);
+
   const { taskName, textTask, taskPriority } = useSelector(
     (state) => state.task
   );
@@ -50,9 +52,7 @@ const Modal = ({ dateFromDataPicker }) => {
       setTemp(true);
     }
   };
-  useEffect(() => {
-    console.log(temp);
-  }, [temp]);
+
   return (
     <div className={style.modal}>
       <h1>Make New Task</h1>
@@ -67,8 +67,10 @@ const Modal = ({ dateFromDataPicker }) => {
           textTask: ''
         }}
         onSubmit={(values) => {
+          debugger
           dispatch(
             saveTask(
+              user.id,
               taskName,
               textTask,
               task__arr.length,

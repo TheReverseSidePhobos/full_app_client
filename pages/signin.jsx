@@ -3,9 +3,14 @@ import Layout from '../components/Layout';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import style from '../styles/signup.module.scss';
+import { login } from '../redux/actions/auth_actions';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 
 const Signin = () => {
 
+  const router = useRouter();
+  
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
     password: Yup.string().required(),
@@ -15,9 +20,12 @@ const Signin = () => {
     password: ''
   };
   const renderError = (message) => <p className={style.isDanger}>{message}</p>;
-
+  const dispatch = useDispatch();
   const handleSubmit = (values) => {
     console.log(values);
+    debugger
+    dispatch(login(values.email, values.password))
+    router.push("/");
   };
 
   return (
